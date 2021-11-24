@@ -21,8 +21,8 @@ public class EnumGenerator {
         this.outPutFilePath = outPutFilePath;
     }
 
-    public void execute() {
-        this.packageConfige = new PackageConfige("com.tdd","PayMetnod","注解","lis");
+    public void execute(PackageConfige packageConfige) {
+        this.packageConfige = packageConfige;
         this.enumsConfige = new EnumsConfige();
         templateEngine.execute();
     }
