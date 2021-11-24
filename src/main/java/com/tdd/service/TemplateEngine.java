@@ -2,8 +2,6 @@ package com.tdd.service;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.config.ConstVal;
-import com.tdd.bo.EnumsConfige;
-import com.tdd.bo.PackageConfige;
 import com.tdd.util.VelocityContextUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -26,10 +24,11 @@ public class TemplateEngine {
 
     public void execute() {
         StringWriter sw = new StringWriter();
-
         Template template = this.init().getTemplate("temple\\service.java.vm");
-        VelocityContext velocityContext = VelocityContextUtil.generateConfigContext(enumGenerator.getPackageConfige(), enumGenerator.getEnumsConfige());
+        merge(sw, template, VelocityContextUtil.generateConfigContext(enumGenerator.getPackageConfige(), enumGenerator.getEnumsConfige()));
+    }
 
+    private void merge(StringWriter sw, Template template, VelocityContext velocityContext) {
         template.merge( velocityContext, sw );
         try(FileWriter fw = new FileWriter(enumGenerator.getOutPutFilePath())){
             fw.write(sw.toString());
@@ -37,8 +36,6 @@ public class TemplateEngine {
             e.printStackTrace();
         }
     }
-
-
 
     private VelocityEngine init() {
         Properties p = new Properties();
