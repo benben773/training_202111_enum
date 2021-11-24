@@ -1,0 +1,17 @@
+package ${package};
+
+/**
+ * <p>
+ *
+ * $!{comment} 服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public enum ${className}  {
+    #foreach($thisEnum in ${enums})
+        ${thisEnum.enumFildName}("${thisEnum.enumValue}","${thisEnum.desc}"),
+    #end
+    ;
+}
