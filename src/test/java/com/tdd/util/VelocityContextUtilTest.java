@@ -10,7 +10,7 @@ public class VelocityContextUtilTest {
 
     @Test
     public void testGenerateConfigContext() {
-        PackageConfige packageConfig = new PackageConfige();
+        PackageConfige packageConfig = new PackageConfige("com.tdd","PayMetnod","注解","lis");
         EnumsConfige enumsConfig = new EnumsConfige();
         VelocityContext result = VelocityContextUtil.generateConfigContext(packageConfig, enumsConfig);
         Assert.assertEquals(result.get("package"), "com.tdd");
