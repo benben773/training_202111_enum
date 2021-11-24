@@ -61,9 +61,7 @@ public class TemplateEngine {
         context.put( "enums", Arrays.asList(new EnumBody("AliPay","1","支付宝"),new EnumBody("WeChatPay","2","微信支付")) );
         context.put( "fileAnnotation", Arrays.asList("AliPay,weChatPay".split(",")) );
         template.merge( context, sw );
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(enumGenerator.getOutPutFilePath());
+        try(FileWriter fw = new FileWriter(enumGenerator.getOutPutFilePath())){
             fw.write(sw.toString());
             fw.close();
         } catch (IOException e) {
