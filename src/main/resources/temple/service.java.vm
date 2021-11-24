@@ -14,4 +14,20 @@ public enum ${className}  {
         ${thisEnum.enumFildName}("${thisEnum.enumValue}","${thisEnum.desc}"),
     #end
     ;
+
+    private String value;
+    private String desc;
+
+    ${className}(String value, String desc) {
+        this.value = value;
+        this.desc = desc;
+    }
+
+    public String getValue() {
+         return value;
+    }
+
+    public String getDesc() {
+         return desc;
+    }
 }

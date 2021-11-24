@@ -2,6 +2,9 @@ package com.tdd.service;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.config.ConstVal;
+import com.tdd.bo.EnumsConfige;
+import com.tdd.bo.PackageConfige;
+import com.tdd.util.VelocityContextUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -12,8 +15,6 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Properties;
 
 public class TemplateEngine {
@@ -23,51 +24,21 @@ public class TemplateEngine {
         this.enumGenerator = enumGenerator;
     }
 
-    public class EnumBody {
-        private String enumFildName;
-        private String enumValue;
-        private String desc;
-
-        public EnumBody(String enumFildName, String enumValue, String desc) {
-            this.enumFildName = enumFildName;
-            this.enumValue = enumValue;
-            this.desc = desc;
-        }
-
-        public String getEnumFildName() {
-            return enumFildName;
-        }
-
-        public String getEnumValue() {
-            return enumValue;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-    }
     public void execute() {
-
         StringWriter sw = new StringWriter();
 
         Template template = this.init().getTemplate("temple\\service.java.vm");
-        VelocityContext context = new VelocityContext();
+        VelocityContext velocityContext = VelocityContextUtil.generateConfigContext(enumGenerator.getPackageConfige(), enumGenerator.getEnumsConfige());
 
-        context.put( "package", "com.tdd" );
-        context.put( "className", "NewEnum" );
-        context.put( "date",  LocalDate.now().toString());
-        context.put( "comment", "注释");
-        context.put( "author", "lis");
-        context.put( "enums", Arrays.asList(new EnumBody("AliPay","1","支付宝"),new EnumBody("WeChatPay","2","微信支付")) );
-        context.put( "fileAnnotation", Arrays.asList("AliPay,weChatPay".split(",")) );
-        template.merge( context, sw );
+        template.merge( velocityContext, sw );
         try(FileWriter fw = new FileWriter(enumGenerator.getOutPutFilePath())){
             fw.write(sw.toString());
-            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     private VelocityEngine init() {
         Properties p = new Properties();
